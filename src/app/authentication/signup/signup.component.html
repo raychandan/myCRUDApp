@@ -1,0 +1,102 @@
+<div *ngIf="openCropModal" class="modal show bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Crop Image</h5>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-6 col-sm-12 col-lg-6">
+                    <image-cropper
+                    [imageChangedEvent]="imageChangedEvent"
+                    [maintainAspectRatio]="true"
+                    [aspectRatio]="4 / 3"
+                    format="png"
+                    (imageCropped)="imageCropped($event)"
+                    ></image-cropper>
+                </div>
+                <div class="col-md-6 col-sm-12 col-lg-6">
+                    <img [src]="croppedImage" />
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeCropModal()">Crop</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="main">
+
+    <!-- Sign up form -->
+    <section class="signup">
+        <div class="container">
+            <div class="signup-content">
+                <div class="signup-form">
+                    <h2 class="form-title">Sign up</h2>
+                    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form" id="register-form">
+                        <div class="form-group">
+                            <label for="Name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                            <input type="text" name="Name" id="Name" placeholder="Your Name" formControlName="Name" [ngClass]="{ 'is-invalid': submitted && Name.errors }"/>
+                            <div *ngIf="submitted && Name.errors" class="invalid-feedback">
+                                <div *ngIf="Name.hasError('required')">Name is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Email"><i class="zmdi zmdi-email"></i></label>
+                            <input type="email" name="Email" id="Email" placeholder="Your Email" formControlName="Email" [ngClass]="{ 'is-invalid': submitted && Email.errors }"/>
+                            <div *ngIf="submitted && Email.errors" class="invalid-feedback">
+                                <div *ngIf="Email.hasError('required')">Email is required</div>
+                                <div *ngIf="Email.errors?.['email']">Email is Invalid</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Password"><i class="zmdi zmdi-lock"></i></label>
+                            <input type="password" name="Password" id="Password" placeholder="Password" formControlName="Password" [ngClass]="{ 'is-invalid': submitted && Password.errors }"/>
+                            <div *ngIf="submitted && Password.errors" class="invalid-feedback">
+                                <div *ngIf="Password.hasError('required')">Password is required</div>
+                                <!-- <div *ngIf="registerForm.get('Password').minlength">Password must be of 6 digits</div> -->
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ConfirmPassword"><i class="zmdi zmdi-lock-outline"></i></label>
+                            <input type="password" name="ConfirmPassword" id="ConfirmPassword" placeholder="Repeat your password" formControlName="ConfirmPassword" [ngClass]="{ 'is-invalid': submitted && ConfirmPassword.errors }"/>
+                            <div *ngIf="submitted && ConfirmPassword.errors" class="invalid-feedback">
+                                <div *ngIf="ConfirmPassword.hasError('required')">Confirm Password is required</div>
+                                <div *ngIf="ConfirmPassword.errors?.['confirmPasswordValidator']">Password does not match</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="file-upload">
+                                <div class="file-upload-select" (click)="openFilePopup();">
+                                    <div class="file-select-button" >Choose File</div>
+                                <div class="file-select-name" id="file-select-name">No file chosen...</div> 
+                                <input type="file" name="file-upload-input" id="file-upload-input" (change)="changeFileName($event)" [ngClass]="{ 'is-invalid': submitted && Base64image.errors }">
+                                <div *ngIf="submitted && Base64image.errors" class="invalid-feedback">
+                                    <div *ngIf="Base64image.hasError('required')">Image is required</div>
+                                </div>
+                                </div>
+                            </div>
+                            <p class="allowed-file">Only JPG and PNG files are allowed.</p>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" name="AgreeTerm" id="AgreeTerm" class="agree-term" formControlName="AgreeTerm" [ngClass]="{ 'is-invalid': submitted && AgreeTerm.errors }"/>
+                            <label for="AgreeTerm" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="javascript:void(0)" class="term-service">Terms of service</a></label>
+                            <div *ngIf="submitted && AgreeTerm.errors" class="invalid-feedback">
+                                <div *ngIf="AgreeTerm.hasError('required')">Agree Term is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group form-button">
+                            <input type="submit" name="signup" id="signup" class="form-submit" value="Register"/>
+                        </div>
+                    </form>
+                </div>
+                <div class="signup-image">
+                    <figure><img src="/assets/images/signup-image.jpg" alt="sing up image"></figure>
+                    <a [routerLink]="signinPath" class="signup-image-link">I am already member</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

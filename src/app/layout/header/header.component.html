@@ -1,0 +1,15 @@
+<nav class="topnav" id="topnav">
+    <a [routerLink]="homePath" class="logo" (click)="untoggle();">
+      <img src="https://static.thenounproject.com/png/603655-200.png" alt="Logo">
+    </a>
+    <a [routerLink]="homePath" [routerLinkActive]="activeClass" (click)="untoggle();">Home</a>
+    <span *ngIf= '!isLoggedIn'>
+      <a [routerLink]="signinPath" [routerLinkActive]="activeClass" (click)="untoggle();">LogIn</a>
+      <a [routerLink]="signupPath" [routerLinkActive]="activeClass" (click)="untoggle();">SignUp</a>
+    </span>
+    <span *ngIf= 'isLoggedIn'>
+      <a [routerLink]="userPath" [routerLinkActive]="activeClass" (click)="untoggle();">Profile</a>
+      <a href="javascript:void(0)" (click)="logout();">Logout</a>
+    </span>
+    <button class="icon" (click)="toggle();"><i class="fa fa-bars"></i></button>
+</nav>

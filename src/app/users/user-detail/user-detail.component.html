@@ -1,0 +1,98 @@
+<!-- Modal -->
+<div *ngIf="openCropModal" class="modal show bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Crop Image</h5>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-6 col-sm-12 col-lg-6">
+                    <image-cropper
+                    [imageChangedEvent]="imageChangedEvent"
+                    [maintainAspectRatio]="true"
+                    [aspectRatio]="4 / 3"
+                    format="png"
+                    (imageCropped)="imageCropped($event)"
+                    ></image-cropper>
+                </div>
+                <div class="col-md-6 col-sm-12 col-lg-6">
+                    <img [src]="croppedImage" />
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeCropModal()">Crop</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="main">
+
+    <!-- Sign up form -->
+    <section class="signup">
+        <div class="container">
+            <div class="signup-content">
+                <div class="signup-form">
+                    <h2 class="form-title">Profile Details</h2>
+                    <form [formGroup]="userForm" (ngSubmit)="updateUser()" class="register-form" id="register-form">
+                        <div class="form-group">
+                            <label for="Name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                            <input type="text" name="Name" id="Name" placeholder="Your Name" formControlName="Name" [ngClass]="{ 'is-invalid': submitted && Name.errors }" [readonly]="!isEdit"/>
+                            <div *ngIf="submitted && Name.errors" class="invalid-feedback">
+                                <div *ngIf="Name.hasError('required')">Name is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Email"><i class="zmdi zmdi-email"></i></label>
+                            <input type="email" name="Email" id="Email" placeholder="Your Email" formControlName="Email" [ngClass]="{ 'is-invalid': submitted && Email.errors }" [readonly]="true"/>
+                            <div *ngIf="submitted && Email.errors" class="invalid-feedback">
+                                <div *ngIf="Email.hasError('required')">Email is required</div>
+                                <div *ngIf="Email.errors?.['email']">Email is Invalid</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <mat-label>Gender:</mat-label>
+                            <mat-radio-group aria-label="Select an option" formControlName="Gender" [ngClass]="{ 'is-invalid': submitted && Email.errors }" [disabled]="!isEdit">
+                                <mat-radio-button value="Male" >Male</mat-radio-button>
+                                <mat-radio-button value="Female">Female</mat-radio-button>
+                            </mat-radio-group>
+                            <div *ngIf="submitted && Gender.errors" class="invalid-feedback validation">
+                                <div *ngIf="Gender.hasError('required')">Gender is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="DateOfBirth"><i class="zmdi zmdi-calendar"></i></label>
+                            <input matInput [matDatepicker]="picker1" name="DateOfBirth" id="DateOfBirth" formControlName="DateOfBirth" placeholder="Date of Birth" (dateChange)="dateChange($event)" [ngClass]="{ 'is-invalid': submitted && Email.errors }" [readonly]="!isEdit">
+                            <mat-datepicker-toggle matSuffix [for]="picker1" [disabled]="!isEdit"> <mat-icon matDatepickerToggleIcon><i class="fa fa-angle-down" aria-hidden="true"></i></mat-icon> </mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
+                            <div *ngIf="submitted && DateOfBirth.errors" class="invalid-feedback validation">
+                                <div *ngIf="DateOfBirth.hasError('required')">Date Of Birth is required</div>
+                            </div>
+                            
+                        </div>
+                        <div class="form-group" *ngIf="isEdit">
+                            <div class="file-upload">
+                                <div class="file-upload-select" (click)="openFilePopup();">
+                                    <div class="file-select-button" >Choose File</div>
+                                <div class="file-select-name" id="file-select-name">No file chosen...</div> 
+                                <input type="file" name="file-upload-input" id="file-upload-input" (change)="changeFileName($event)">
+                                </div>
+                            </div>
+                            <p class="allowed-file">Only JPG and PNG files are allowed.</p>
+                        </div>
+                        <div class="form-group form-button">
+                            <input type="submit" name="signup" id="signup" class="form-submit" value="Save" *ngIf="isEdit"/>
+                            <input type="button" name="signup" class="form-submit cancel-button" value="Cancel" *ngIf="isEdit" (click)="changeMode(false);"/>
+                            <input type="button" name="signup" class="form-submit" value="Edit" *ngIf="!isEdit" (click)="changeMode(true);"/>
+                        </div>
+                    </form>
+                </div>
+                <div class="signup-image">
+                    <figure><img [src]="imageUrl" alt="sing up image"></figure>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
